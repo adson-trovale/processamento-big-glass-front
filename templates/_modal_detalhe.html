@@ -1,0 +1,45 @@
+{% from "_macros.html" import ic -%}
+<dialog id="dlg-detalhe" class="dlg dlg-detalhe" aria-labelledby="det-titulo">
+  <div class="det">
+    <button class="btn btn-ghost det-x" type="button" aria-label="Fechar" data-fechar>{{ ic('x') }}</button>
+
+    <div class="det-topo">
+      <span class="det-id" id="det-id"></span>
+      <h2 id="det-titulo"></h2>
+      <span class="badge det-badge" id="det-badge"></span>
+    </div>
+
+    <div class="det-grade">
+      <div class="campo-ro"><span class="rotulo">Usuário</span><span class="valor" id="det-usuario"></span></div>
+      <div class="campo-ro" id="det-c-orgao" hidden><span class="rotulo">Órgão solicitante</span><span class="valor" id="det-orgao"></span></div>
+      <div class="campo-ro" id="det-c-espaco" hidden><span class="rotulo">Espaço QlikSense</span><span class="valor" id="det-espaco"></span></div>
+      <div class="campo-ro"><span class="rotulo">Cadastro</span><span class="valor" id="det-cadastro"></span></div>
+      <div class="campo-ro"><span class="rotulo">Início</span><span class="valor" id="det-inicio"></span></div>
+      <div class="campo-ro"><span class="rotulo">Fim</span><span class="valor" id="det-fim"></span></div>
+      <div class="campo-ro" id="det-c-ref" hidden><span class="rotulo">Referência externa</span><span class="valor" id="det-ref"></span></div>
+    </div>
+
+    <div class="campo-ro">
+      <span class="rotulo">Descrição</span>
+      <span class="det-desc" id="det-desc"></span>
+    </div>
+
+    <div class="campo-ro">
+      <span class="rotulo">Documentos (<span id="det-qtd">0</span>)</span>
+      <div class="det-docs" id="det-docs"></div>
+    </div>
+
+    <div class="campo-ro">
+      <span class="rotulo">Problemas</span>
+      <span class="mudo" id="det-sem-problemas">Nenhum problema reportado.</span>
+      <div id="det-problemas"></div>
+    </div>
+
+    <p class="det-erro" id="det-erro" role="alert" hidden></p>
+
+    <div class="det-acoes">
+      <button class="btn btn-outline" type="button" data-fechar>Fechar</button>
+      <button class="btn btn-primary" type="button" id="btn-reenviar" hidden>{{ ic('refresh') }}Reenviar</button>
+    </div>
+  </div>
+</dialog>

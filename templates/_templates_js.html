@@ -1,0 +1,42 @@
+{% from "_macros.html" import ic -%}
+{# Moldes clonados pelo JavaScript; todo texto dinâmico entra por textContent. #}
+
+<template id="tpl-stat">
+  <button class="stat" type="button" aria-pressed="false">
+    <span class="stat-rotulo"><span class="dot"></span><span data-campo="rotulo"></span></span>
+    <span class="stat-valor" data-campo="valor"></span>
+  </button>
+</template>
+
+<template id="tpl-linha">
+  <tr>
+    <td class="td-id" data-campo="id"></td>
+    <td class="td-nome">
+      <div class="nome" data-campo="nome"></div>
+      <div class="desc" data-campo="descricao"></div>
+    </td>
+    <td class="td-usuario" data-campo="usuario"></td>
+    <td class="dir num" data-campo="qtd"></td>
+    <td>
+      <span class="badge" data-campo="badge">{{ ic('alert', 'ic-sm') }}<span data-campo="status"></span></span>
+    </td>
+    <td class="td-data" data-campo="cadastro"></td>
+    <td class="td-data" data-campo="inicio"></td>
+    <td class="td-data" data-campo="fim"></td>
+    <td class="dir">
+      <button class="btn btn-ghost" type="button" aria-label="Ver detalhes do processamento" title="Ver detalhes" data-ver>{{ ic('eye') }}</button>
+    </td>
+  </tr>
+</template>
+
+<template id="tpl-problema">
+  <div class="prob">
+    <div class="prob-linha">
+      {{ ic('alert') }}
+      <code data-campo="codigo"></code>
+      <span class="prob-sev" data-campo="severidade"></span>
+      <span data-campo="documento"></span>
+    </div>
+    <span class="prob-msg" data-campo="mensagem"></span>
+  </div>
+</template>

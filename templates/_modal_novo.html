@@ -1,0 +1,104 @@
+{% from "_macros.html" import ic -%}
+<dialog id="dlg-novo" class="dlg dlg-novo" aria-labelledby="novo-titulo">
+  <div class="dlg-topo">
+    <div class="dlg-titulos">
+      <h2 id="novo-titulo">Novo processamento</h2>
+      <p>Informe os dados e até 10 CPFs ou CNPJs para enviar ao BIG GLASS.</p>
+    </div>
+    <button class="btn btn-ghost" type="button" aria-label="Fechar" data-fechar>{{ ic('x') }}</button>
+  </div>
+
+  <div class="dlg-corpo">
+    <section class="sec">
+      <div class="sec-topo">{{ ic('file-text', 'ic-lg navy') }}<h3>Dados do processamento</h3></div>
+      <div class="sec-grade">
+        <div class="campo campo-cheio">
+          <label for="nome">Nome do processamento <span class="obrig">*</span></label>
+          <input id="nome" class="inp" type="text" maxlength="120" placeholder="Ex.: Due diligence — Alfa Transportes" autocomplete="off">
+          <p class="erro-campo" id="nome-erro" role="alert" hidden></p>
+        </div>
+        <div class="campo campo-cheio">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" class="inp" maxlength="500" placeholder="Contexto do pedido, área solicitante, observações..."></textarea>
+          <span class="ajuda">Opcional · <span id="desc-cont">0</span> de 500 caracteres</span>
+          <p class="erro-campo" id="descricao-erro" role="alert" hidden></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-topo">
+        {{ ic('users', 'ic-lg navy') }}<h3>Documentos</h3>
+        <span class="badge b-gray contador" id="qtd-docs">0 de 10</span>
+      </div>
+
+      <div class="sec-corpo">
+        <div class="segs" role="group" aria-label="Forma de inclusão">
+          <button class="seg on" type="button" id="seg-digitar" aria-pressed="true">{{ ic('pencil') }}Digitar documento</button>
+          <button class="seg" type="button" id="seg-arquivo" aria-pressed="false">{{ ic('upload') }}Importar arquivo</button>
+        </div>
+
+        <div id="painel-digitar" class="painel">
+          <label for="doc">CPF ou CNPJ</label>
+          <div class="linha-doc">
+            <input id="doc" class="inp" type="text" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00 ou 00.000.000/0000-00">
+            <button class="pill" type="button" id="btn-adicionar">{{ ic('plus') }}Adicionar</button>
+          </div>
+          <p class="erro-campo" id="doc-erro" role="alert" hidden></p>
+          <span class="ajuda">Pontuação opcional. O tipo (PF ou PJ) é identificado pelo número de dígitos. Enter também adiciona.</span>
+        </div>
+
+        <div id="painel-arquivo" class="painel" hidden>
+          <label class="drop" for="arquivo">
+            <input id="arquivo" class="sr-only" type="file" accept=".csv,.txt,text/csv,text/plain">
+            {{ ic('upload', 'ic-drop') }}
+            <span class="drop-titulo">Selecione um arquivo CSV ou TXT</span>
+            <span class="ajuda">Um documento por linha · segunda coluna opcional: 1 = PF, 0 = PJ · até 50 KB</span>
+          </label>
+          <div class="linha-pills">
+            <button class="pill" type="button" id="btn-exemplo">{{ ic('file') }}<span id="exemplo-rotulo">Ver exemplo de arquivo</span></button>
+            <button class="pill" type="button" id="btn-importar-exemplo">{{ ic('download') }}Simular importação do exemplo</button>
+          </div>
+          <pre class="exemplo" id="exemplo" hidden>documento;tipo
+11.222.333/0001-81;0
+529.982.247-25;1
+12345678000195;0
+111.444.777-00;1
+39053344705</pre>
+          <p class="aviso aviso-ok" id="import-ok" role="status" hidden></p>
+          <p class="aviso aviso-erro" id="import-erro" role="alert" hidden></p>
+          <div class="ignoradas" id="ignoradas" hidden>
+            <span class="ignoradas-titulo">Linhas ignoradas</span>
+            <div id="ignoradas-lista"></div>
+          </div>
+        </div>
+
+        <div class="docs-vazio" id="docs-vazio">Nenhum documento adicionado ainda.</div>
+        <div class="docs-tabela" id="docs-tabela" hidden>
+          <table class="tbl tbl-docs">
+            <thead>
+              <tr>
+                <th scope="col">Documento</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Origem</th>
+                <th scope="col" class="dir">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="docs-corpo"></tbody>
+          </table>
+        </div>
+        <p class="erro-campo" id="docs-erro" role="alert" hidden></p>
+      </div>
+    </section>
+
+    <p class="aviso aviso-erro" id="form-erro" role="alert" hidden></p>
+  </div>
+
+  <div class="dlg-rodape">
+    <span class="resumo">Documentos: <span id="resumo-docs">Nenhum</span></span>
+    <div class="dlg-acoes">
+      <button class="btn btn-outline" type="button" data-fechar>Cancelar</button>
+      <button class="btn btn-primary" type="button" id="btn-solicitar" disabled>{{ ic('send') }}Solicitar processamento</button>
+    </div>
+  </div>
+</dialog>

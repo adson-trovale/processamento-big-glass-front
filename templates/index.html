@@ -1,0 +1,106 @@
+{% from "_macros.html" import ic -%}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BIG GLASS — Processamentos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body data-api-modo="{{ api_modo }}" data-usuario="{{ usuario }}"
+      data-api-url-criar="{{ api_url_criar }}" data-api-url-status="{{ api_url_status }}"
+      data-cliente-solicitante="{{ cliente_solicitante }}" data-sigla-orgao="{{ sigla_orgao }}"
+      {%- if api_token %} data-api-token="{{ api_token }}"{% endif %}>
+{% include "_icones.html" %}
+
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">T</div>
+      <div class="brand-text">
+        <span class="brand-nome">Trovale</span>
+        <span class="brand-sub">Processamentos BIG GLASS</span>
+      </div>
+    </div>
+
+    <nav class="menu" aria-label="Menu principal">
+      <span class="menu-titulo">Menu principal</span>
+      <button class="nav" type="button">{{ ic('home') }}Início</button>
+      <button class="nav on" id="nav-hist" type="button" aria-current="page">{{ ic('list') }}Processamentos</button>
+      <button class="nav" id="nav-novo" type="button" data-abrir-novo>{{ ic('plus') }}Novo processamento</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="wrap">
+      <nav class="trilha" aria-label="Trilha">
+        <span>Início</span>{{ ic('chevron-right', 'ic-xs') }}<span>BIG GLASS</span>{{ ic('chevron-right', 'ic-xs') }}<span class="atual">Processamentos</span>
+      </nav>
+
+      <div class="stack">
+        <div class="head">
+          <div class="head-texto">
+            <h1>Processamentos</h1>
+            <p>Acompanhe os processamentos enviados ao BIG GLASS. O status é atualizado automaticamente a cada 60 s.</p>
+          </div>
+          <div class="head-acoes">
+            <button class="btn btn-outline" type="button" id="btn-atualizar">{{ ic('refresh') }}Atualizar</button>
+            <button class="btn btn-primary" type="button" data-abrir-novo>{{ ic('plus') }}Novo processamento</button>
+          </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="card">
+          <form class="toolbar" id="form-filtros" role="search">
+            <div class="busca">
+              {{ ic('search') }}
+              <label class="sr-only" for="busca">Buscar processamento</label>
+              <input id="busca" class="inp" type="search" name="q" maxlength="120" placeholder="Buscar por nome ou ID..." autocomplete="off">
+            </div>
+            <label class="sr-only" for="filtro-usuario">Filtrar por usuário</label>
+            <select id="filtro-usuario" class="inp inp-auto" name="usuario">
+              <option value="todos">Todos os usuários</option>
+            </select>
+            <button class="sr-only" type="submit">Filtrar</button>
+            <span class="filtro-rotulo" id="filtro-rotulo">Filtro: Todos</span>
+          </form>
+
+          <div class="tabela-wrap" id="tabela-wrap">
+            <table class="tbl tbl-lista">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Processamento</th>
+                  <th scope="col">Usuário</th>
+                  <th scope="col" class="dir">Docs</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Cadastro</th>
+                  <th scope="col">Início</th>
+                  <th scope="col">Fim</th>
+                  <th scope="col" class="dir">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="linhas"></tbody>
+            </table>
+            <div class="vazio" id="lista-estado" role="status">Carregando processamentos…</div>
+          </div>
+
+          <div class="rodape">
+            <span id="rodape-texto"></span>
+            <nav class="pag" id="paginacao" aria-label="Paginação"></nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% include "_modal_novo.html" %}
+{% include "_modal_detalhe.html" %}
+{% include "_templates_js.html" %}
+
+<div id="toasts" class="toasts" popover="manual" role="status" aria-live="polite"></div>
+</body>
+</html>

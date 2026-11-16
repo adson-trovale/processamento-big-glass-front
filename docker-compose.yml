@@ -1,0 +1,30 @@
+# docker compose up -d --build
+# A configuração vem do arquivo .env (copie de .env.example) ou do ambiente.
+services:
+  processamentos:
+    build: .
+    image: processamentos-front:latest
+    container_name: processamentos-front
+    restart: unless-stopped
+    ports:
+      - "${PORTA:-8080}:8000"
+    environment:
+      API_MODO: ${API_MODO:-mock}
+      API_URL_CRIAR: ${API_URL_CRIAR:-}
+      API_URL_STATUS: ${API_URL_STATUS:-}
+      API_TOKEN: ${API_TOKEN:-}
+      CLIENTE_SOLICITANTE: ${CLIENTE_SOLICITANTE:-}
+      SIGLA_ORGAO: ${SIGLA_ORGAO:-}
+      USUARIO_ATUAL: ${USUARIO_ATUAL:-ana.souza}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
+    # Endurecimento: o app não grava em disco e não precisa de nenhum privilégio.
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
